@@ -1,0 +1,126 @@
+@* 年月, 月別のデータのリスト、月別集計データのリスト *@
+@(msg: String, datas: List[LifeLog], monSum: LifeLog, yearSum: LifeLog)
+
+@import java.text.SimpleDateFormat
+@import helper._
+
+@*
+ * Call the the `main` template with two arguments. The first
+ * argument is a `String` with the title of the page, the second
+ * argument is an `Html` object containing the body of the page.
+ *@
+@main("LogApp2") {
+
+    @*
+     * Get an `Html` object by calling the built-in Play welcome
+     * template and passing a `String` message.
+     *@
+    @*@play20.welcome(message, style = "Java") *@
+
+    <a href="@routes.LifeLogController.displayNew()">新規登録</a>
+
+    <p>@msg</p>
+
+    <h2>年別集計</h2>
+    @if(yearSum != null) {
+        <table>
+            <tr>
+                <th>就寝</th>
+                <th>起床</th>
+                <th>退社</th>
+                <th>歩数</th>
+                <th>RUN</th>
+                <th>読書</th>
+                <th>技術書</th>
+                <th>Biz書</th>
+                <th>技術勉強</th>
+                <th>英語勉強</th>
+            </tr>
+            <tr>
+                <th>@{yearSum.toHourMin(yearSum.sleepHour,yearSum.sleepMin)}</th>
+                <th>@{yearSum.toHourMin(yearSum.wakeUpHour,yearSum.wakeUpMin)}</th>
+                <th>@{yearSum.toHourMin(yearSum.leaveHour,yearSum.leaveMin)}</th>
+                <th>@yearSum.walkCount</th>
+                <th>@yearSum.runDistance</th>
+                <th>@yearSum.readCount</th>
+                <th>@yearSum.techReadCount</th>
+                <th>@yearSum.bizReadCount</th>
+                <th>@{yearSum.toHourMin(yearSum.techStudyTime)}</th>
+                <th>@{yearSum.toHourMin(yearSum.englishStudyTime)}</th>
+            </tr>
+        </table>
+    } else {
+        <p>レコードなし</p>
+    }
+    <h2>月別集計</h2>
+    @if(monSum != null) {
+        <table>
+            <tr>
+                <th>就寝</th>
+                <th>起床</th>
+                <th>退社</th>
+                <th>歩数</th>
+                <th>RUN</th>
+                <th>読書</th>
+                <th>技術書</th>
+                <th>Biz書</th>
+                <th>技術勉強</th>
+                <th>英語勉強</th>
+            </tr>
+            <tr>
+                <th>@{monSum.toHourMin(monSum.sleepHour,monSum.sleepMin)}</th>
+                <th>@{monSum.toHourMin(monSum.wakeUpHour,monSum.wakeUpMin)}</th>
+                <th>@{monSum.toHourMin(monSum.leaveHour,monSum.leaveMin)}</th>
+                <th>@monSum.walkCount</th>
+                <th>@monSum.runDistance</th>
+                <th>@monSum.readCount</th>
+                <th>@monSum.techReadCount</th>
+                <th>@monSum.bizReadCount</th>
+                <th>@{monSum.toHourMin(monSum.techStudyTime)}</th>
+                <th>@{monSum.toHourMin(monSum.englishStudyTime)}</th>
+            </tr>
+        </table>
+    } else {
+        <p>レコードなし</p>
+    }
+    <h2>一覧</h2>
+    @if(datas != null && datas.size() != 0) {
+        <table>
+            <tr>
+                <th></th>
+                <th>日付</th>
+                <th>就寝</th>
+                <th>起床</th>
+                <th>退社</th>
+                <th>歩数</th>
+                <th>RUN</th>
+                <th>読書</th>
+                <th>技術書</th>
+                <th>Biz書</th>
+                <th>技術勉強</th>
+                <th>英語勉強</th>
+            </tr>
+            @for(data <- datas) {
+
+            <tr>
+                <th>
+                    <a href="/edit/@data.id">編集</a>
+                </th>
+                <th>@{(new SimpleDateFormat("yy/MM/dd")).format(data.logDate)}</th>
+                <th>@{data.toHourMin(data.sleepHour,data.sleepMin)}</th>
+                <th>@{data.toHourMin(data.wakeUpHour,data.wakeUpMin)}</th>
+                <th>@{data.toHourMin(data.leaveHour,data.leaveMin)}</th>
+                <th>@data.walkCount</th>
+                <th>@data.runDistance</th>
+                <th>@data.readCount</th>
+                <th>@data.techReadCount</th>
+                <th>@data.bizReadCount</th>
+                <th>@{data.toHourMin(data.techStudyTime)}</th>
+                <th>@{data.toHourMin(data.englishStudyTime)}</th>
+            </tr>
+            }
+        </table>
+    } else {
+        <p>レコードなし</p>
+    }
+}

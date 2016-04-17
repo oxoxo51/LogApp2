@@ -1,0 +1,40 @@
+@*
+ * This template is called from the `index` template. This template
+ * handles the rendering of the page header and body tags. It takes
+ * two arguments, a `String` for the title of the page and an `Html`
+ * object to insert into the body of the page.
+ *@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <script type="text/javascript">
+            function showMonthPage() {
+
+                var yearMonthAry = (yearMonthForm.yearMonth.value).split("-");
+                if (yearMonthAry.length === 2) {
+                    location.href = "/" + yearMonthAry[0] + yearMonthAry[1];
+                } else {
+                    alert("年月を選択して下さい");
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form name="yearMonthForm">
+            月別表示を開く：<input type="month" name="yearMonth">
+            <input type="button" value="開く" onclick="showMonthPage()">
+        </form>
+        @* エラーメッセージ表示*@
+        @tag.flashMessage()
+        <div class="content">
+            @* ページ内コンテンツ出力 *@
+            @content
+        </div>
+    </body>
+</html>
