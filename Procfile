@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/logapp2 -Dhttp.port=${PORT} ${JAVA_OPTS} -DapplyEvolutions.  default=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.  url=${DATABASE_URL}
+web: target/universal/stage/bin/logapp2 -Dhttp.port=${PORT} -Dconfig.resource=heroku.conf
