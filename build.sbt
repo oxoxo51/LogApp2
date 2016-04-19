@@ -2,6 +2,8 @@ name := """LogApp2"""
 
 version := "1.0-SNAPSHOT"
 
+herokuAppName in Compile := "logapp2"
+
 lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
 scalaVersion := "2.11.7"
