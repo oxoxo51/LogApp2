@@ -105,6 +105,25 @@ public class LifeLog extends Model {
 	/* Finder */
 	public static Find<Long, LifeLog> find = new Find<Long, LifeLog>(){};
 
+	/* 指定した年月日を含む週のレコードを取得 */
+	public static List<LifeLog> getWeekRecord(String yearMonthDay) throws ParseException {
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+
+		Date day = df.parse(yearMonthDay);
+		cal.setTime(day);
+
+		// 日曜日の日付
+		cal.add(Calendar.DATE, -cal.get(Calendar.DAY_OF_WEEK) + 1);
+		Date sunday = cal.getTime();
+		// 土曜日の日付
+		cal.add(Calendar.DATE, 6);
+		Date saturday = cal.getTime();
+
+		return LifeLog.find.where().between("logDate", sunday, saturday).setOrderBy("logDate").findList();
+
+	}
+
 	/* 指定した年月のレコードを取得 */
 	public static List<LifeLog> getMonthRecord(String yearMonth) throws ParseException {
 		DateFormat df = new SimpleDateFormat("yyyyMM");
