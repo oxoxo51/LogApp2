@@ -1,0 +1,43 @@
+@(datas: List[LifeLog])
+
+@import java.text.SimpleDateFormat
+
+@if(datas != null && datas.size() != 0) {
+<table>
+    <tr>
+        <th></th>
+        <th>日付</th>
+        <th>就寝</th>
+        <th>起床</th>
+        <th>退社</th>
+        <th>歩数</th>
+        <th>RUN</th>
+        <th>読書</th>
+        <th>技術書</th>
+        <th>Biz書</th>
+        <th>技術勉強</th>
+        <th>英語勉強</th>
+    </tr>
+    @for(data <- datas) {
+
+    <tr>
+        <th>
+            <a href="/edit/@data.id">編集</a>
+        </th>
+        <th>@{(new SimpleDateFormat("yy/MM/dd(E)")).format(data.logDate)}</th>
+        <th>@{data.toHourMin(data.sleepHour,data.sleepMin)}</th>
+        <th>@{data.toHourMin(data.wakeUpHour,data.wakeUpMin)}</th>
+        <th>@{data.toHourMin(data.leaveHour,data.leaveMin)}</th>
+        <th>@data.walkCount</th>
+        <th>@data.runDistance</th>
+        <th>@data.readCount</th>
+        <th>@data.techReadCount</th>
+        <th>@data.bizReadCount</th>
+        <th>@{data.toHourMin(data.techStudyTime)}</th>
+        <th>@{data.toHourMin(data.englishStudyTime)}</th>
+    </tr>
+    }
+</table>
+} else {
+<p>レコードなし</p>
+}

@@ -1,0 +1,31 @@
+@(sum: LifeLog)
+@if(sum != null) {
+<table>
+    <tr>
+        <th>就寝</th>
+        <th>起床</th>
+        <th>退社</th>
+        <th>歩数</th>
+        <th>RUN</th>
+        <th>読書</th>
+        <th>技術書</th>
+        <th>Biz書</th>
+        <th>技術勉強</th>
+        <th>英語勉強</th>
+    </tr>
+    <tr>
+        <th>@{sum.toHourMin(sum.sleepHour,sum.sleepMin)}</th>
+        <th>@{sum.toHourMin(sum.wakeUpHour,sum.wakeUpMin)}</th>
+        <th>@{sum.toHourMin(sum.leaveHour,sum.leaveMin)}</th>
+        <th>@sum.walkCount</th>
+        <th>@sum.runDistance</th>
+        <th>@sum.readCount</th>
+        <th>@sum.techReadCount</th>
+        <th>@sum.bizReadCount</th>
+        <th>@{sum.toHourMin(sum.techStudyTime)}</th>
+        <th>@{sum.toHourMin(sum.englishStudyTime)}</th>
+    </tr>
+</table>
+} else {
+<p>レコードなし</p>
+}

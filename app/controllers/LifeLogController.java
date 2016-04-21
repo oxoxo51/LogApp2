@@ -6,8 +6,10 @@ import play.mvc.Result;
 import views.html.editLog;
 import views.html.index;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,9 +21,18 @@ public class LifeLogController extends Apps {
 	// ルートにアクセスしたときのAction
 	public Result index() {
 		// 年月の取得
-		SimpleDateFormat sf = new SimpleDateFormat("yyyyMM");
-		String yearMonth = sf.format(new Date());
-		return redirect("/" + yearMonth);
+		DateFormat sf = new SimpleDateFormat("yyyyMMdd");
+		String yearMonthDay = sf.format(new Date());
+
+		List<LifeLog> thisWData = null;
+		try {
+			thisWData = LifeLog.getWeekRecord(yearMonthDay);
+			return ok(index.render(yearMonthDay, "W", thisWData,
+					getWeeklySummary(yearMonthDay), getWeeklySummary(getPrevWeekDate(yearMonthDay))));
+		} catch (ParseException e) {
+			flash("error", "ERROR:一覧が取得できません。");
+			return badRequest(index.render("ERROR:一覧が取得できません", null, null, null, null));
+		}
 	}
 
 	// 年月毎の表示
@@ -29,18 +40,18 @@ public class LifeLogController extends Apps {
 		// 不正な引数のチェック
 		if (yearMonth.length() != 6) {
 			flash("error", "ERROR:不正なURLです。");
-			return badRequest(index.render("ERROR:不正なURLです。", null, null, null));
+			return badRequest(index.render("ERROR:不正なURLです。", null, null, null, null));
 		}
 		String year = yearMonth.substring(0,4);
 
 		List<LifeLog> datas = null;
 		try {
 			datas = LifeLog.getMonthRecord(yearMonth);
+			return ok(index.render(yearMonth, "M", datas, getMonthlySummary(yearMonth), getYearlySummary(year)));
 		} catch (ParseException e) {
 			flash("error", "ERROR:一覧が取得できません。");
-			return badRequest(index.render("ERROR:一覧が取得できません。", datas, null, null));
+			return badRequest(index.render("ERROR:一覧が取得できません。", "M", datas, null, null));
 		}
-		return ok(index.render(yearMonth, datas, getMonthlySummary(yearMonth), getYearlySummary(year)));
 	}
 
 	// 新規作成時のAction
@@ -89,9 +100,46 @@ public class LifeLogController extends Apps {
 			Form<LifeLog> f = Form.form(LifeLog.class).fill(data);
 			return ok(editLog.render("編集して下さい", f));
 		} else {
-			return ok(index.render("ERROR:見つかりません", null, null, null));
+			return ok(index.render("ERROR:見つかりません", null, null, null, null));
 		}
 	}
+
+	/**
+	 * 週別の集計を返却する.
+	 * TODO 別クラスに外出しすべき？
+	 * @param yearMonthDay
+	 * @return
+	 */
+	public LifeLog getWeeklySummary(String yearMonthDay) {
+		List<LifeLog> datas = null;
+		try {
+			datas = LifeLog.getWeekRecord(yearMonthDay);
+		} catch (ParseException e) {
+			return null;
+		}
+
+		if (datas.size() == 0) {
+			return null;
+		}
+
+		return getSummary(datas);
+	}
+
+	/**
+	 * 一週間前の日付を返す（yyyyMMdd形式）
+	 * @param yearMonthDay
+	 * @return
+	 * @throws ParseException
+	 */
+	private String getPrevWeekDate(String yearMonthDay) throws ParseException {
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+		Date day = df.parse(yearMonthDay);
+		cal.setTime(day);
+		cal.add(Calendar.DATE, -7);
+		return df.format(cal.getTime());
+	}
+
 
 	/**
 	 * 月別の集計を返却する.
