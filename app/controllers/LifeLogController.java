@@ -85,9 +85,7 @@ public class LifeLogController extends Apps {
 				data.save();
 				flash("success", "登録しました。");
 			}
-			SimpleDateFormat sf = new SimpleDateFormat("yyyyMM");
-			String yearMonth = sf.format(new Date());
-			return redirect("/" + yearMonth);
+			return redirect("/");
 		} else {
 			return badRequest(editLog.render("ERROR", f));
 		}
