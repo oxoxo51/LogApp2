@@ -56,7 +56,7 @@ public class LifeLogController extends Apps {
 
 	// 新規作成時のAction
 	public Result displayNew() {
-		Form<LifeLog> f = Form.form(LifeLog.class);
+		Form<LifeLog> f = Form.form(LifeLog.class).fill(new LifeLog(new Date()));
 		return ok(editLog.render("入力して下さい", f));
 	}
 

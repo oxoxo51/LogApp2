@@ -102,6 +102,11 @@ public class LifeLog extends Model {
 		this.englishStudyTime = 0L;
 	}
 
+	/* constructor */
+	public LifeLog(Date date) {
+		this.logDate = date;
+	}
+
 	/* Finder */
 	public static Find<Long, LifeLog> find = new Find<Long, LifeLog>(){};
 
