@@ -28,11 +28,12 @@
         </script>
     </head>
     <body>
+        @* 共通ヘッダ部分 *@
         <form name="yearMonthForm">
             <a href="@routes.LifeLogController.index()">LogApp2</a>
+            <a href="@routes.LifeLogController.displayNew()">新規登録</a>
             月別表示を開く：<input type="month" name="yearMonth">
             <input type="button" value="開く" onclick="showMonthPage()">
-            <a href="@routes.LifeLogController.displayNew()">新規登録</a>
         </form>
         @* エラーメッセージ表示*@
         @tag.flashMessage()
