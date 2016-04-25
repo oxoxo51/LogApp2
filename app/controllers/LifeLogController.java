@@ -6,6 +6,7 @@ import play.mvc.Result;
 import views.html.editLog;
 import views.html.index;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -129,7 +130,7 @@ public class LifeLogController extends Apps {
 	 * @return
 	 * @throws ParseException
 	 */
-	private String getPrevWeekDate(String yearMonthDay) throws ParseException {
+	public static String getPrevWeekDate(String yearMonthDay) throws ParseException {
 		DateFormat df = new SimpleDateFormat("yyyyMMdd");
 		Calendar cal = Calendar.getInstance();
 		Date day = df.parse(yearMonthDay);
@@ -208,7 +209,11 @@ public class LifeLogController extends Apps {
 				leaveCount += 1;
 			}
 			monSum.walkCount += data.walkCount;
-			monSum.runDistance = monSum.runDistance.add(data.runDistance);
+			if (isCalcuratable(data.runDistance)) {
+				monSum.runDistance = monSum.runDistance.add(data.runDistance);
+			} else {
+				monSum.runDistance = monSum.runDistance.add(BigDecimal.ZERO);
+			}
 			monSum.readCount += data.readCount;
 			monSum.techReadCount += data.techReadCount;
 			monSum.bizReadCount += data.bizReadCount;

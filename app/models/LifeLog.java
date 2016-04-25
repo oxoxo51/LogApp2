@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -115,6 +116,19 @@ public class LifeLog extends Model {
 		DateFormat df = new SimpleDateFormat("yyyyMMdd");
 		Calendar cal = Calendar.getInstance();
 
+		Date sunday = df.parse(getFirstAndLastDate(yearMonthDay).get(0));
+		Date saturday = df.parse(getFirstAndLastDate(yearMonthDay).get(1));
+
+		return LifeLog.find.where().between("logDate", sunday, saturday).setOrderBy("logDate").findList();
+
+	}
+
+	/* 指定した年月日を含む週の初日（日曜日）/最終日（土曜日）の日付をyyyyMMdd形式のリストで返す */
+	public static List<String> getFirstAndLastDate(String yearMonthDay) throws ParseException {
+
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+
 		Date day = df.parse(yearMonthDay);
 		cal.setTime(day);
 
@@ -125,8 +139,9 @@ public class LifeLog extends Model {
 		cal.add(Calendar.DATE, 6);
 		Date saturday = cal.getTime();
 
-		return LifeLog.find.where().between("logDate", sunday, saturday).setOrderBy("logDate").findList();
+		List<String> dateList = Arrays.asList(df.format(sunday), df.format(saturday));
 
+		return dateList;
 	}
 
 	/* 指定した年月のレコードを取得 */
@@ -164,6 +179,10 @@ public class LifeLog extends Model {
 		if (isNull(this.walkCount)) {
 			this.walkCount = 0L;
 		}
+		if (null == this.runDistance) {
+			this.runDistance = BigDecimal.ZERO;
+		}
+
 		if (isNull(this.readCount)) {
 			this.readCount = 0L;
 		}

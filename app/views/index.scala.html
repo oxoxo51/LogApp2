@@ -8,7 +8,8 @@
  * argument is a `String` with the title of the page, the second
  * argument is an `Html` object containing the body of the page.
  *@
-@main("LogApp2") {
+
+@main("LogApp2:" + msg) {
 
     @*
      * Get an `Html` object by calling the built-in Play welcome
@@ -20,9 +21,11 @@
 
     <h2>
         @{val title1 = if("M".equals(viewType)) {
-            "年別集計"
+            "年別集計(" + msg.substring(0,4) + "年)"
         } else if("W".equals(viewType)) {
-            "先週のサマリ"
+            val lastWkDate = LifeLogController.getPrevWeekDate(msg)
+            val lastWkDateList = LifeLog.getFirstAndLastDate(lastWkDate)
+            "先週のサマリ(" + lastWkDateList(0) + "~" + lastWkDateList(1) + ")"
         }
         title1
         }
@@ -30,14 +33,25 @@
     @summary(sum2)
     <h2>
         @{val title2 = if("M".equals(viewType)) {
-            "月別集計"
+            "月別集計(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
         } else if("W".equals(viewType)) {
-            "今週のサマリ"
+            val wkDateList = LifeLog.getFirstAndLastDate(msg)
+            "今週のサマリ(" + wkDateList(0) + "~" + wkDateList(1) + ")"
         }
         title2
         }
     </h2>
     @summary(sum1)
-    <h2>一覧</h2>
+    <h2>
+        @{val title3 = if("M".equals(viewType)) {
+        "一覧(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
+        } else if("W".equals(viewType)) {
+        val wkDateList = LifeLog.getFirstAndLastDate(msg)
+        "一覧(" + wkDateList(0) + "~" + wkDateList(1) + ")"
+        }
+        title3
+        }
+    </h2>
     @logList(datas)
 }
+
