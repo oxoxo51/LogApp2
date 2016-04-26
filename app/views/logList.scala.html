@@ -3,7 +3,9 @@
 @import java.text.SimpleDateFormat
 
 @if(datas != null && datas.size() != 0) {
-<table>
+<div class="container">
+<table class="table table-striped table-hover table-sm table-responsive">
+    <thead>
     <tr>
         <th></th>
         <th>日付</th>
@@ -18,26 +20,29 @@
         <th>技術勉強</th>
         <th>英語勉強</th>
     </tr>
+    </thead>
+    <tbody>
     @for(data <- datas) {
-
     <tr>
-        <th>
+        <td>
             <a href="/edit/@data.id">編集</a>
-        </th>
-        <th>@{(new SimpleDateFormat("yy/MM/dd(E)")).format(data.logDate)}</th>
-        <th>@{data.toHourMin(data.sleepHour,data.sleepMin)}</th>
-        <th>@{data.toHourMin(data.wakeUpHour,data.wakeUpMin)}</th>
-        <th>@{data.toHourMin(data.leaveHour,data.leaveMin)}</th>
-        <th>@data.walkCount</th>
-        <th>@data.runDistance</th>
-        <th>@data.readCount</th>
-        <th>@data.techReadCount</th>
-        <th>@data.bizReadCount</th>
-        <th>@{data.toHourMin(data.techStudyTime)}</th>
-        <th>@{data.toHourMin(data.englishStudyTime)}</th>
+        </td>
+        <td>@{(new SimpleDateFormat("yy/MM/dd(E)")).format(data.logDate)}</td>
+        <td>@{data.toHourMin(data.sleepHour,data.sleepMin)}</td>
+        <td>@{data.toHourMin(data.wakeUpHour,data.wakeUpMin)}</td>
+        <td>@{data.toHourMin(data.leaveHour,data.leaveMin)}</td>
+        <td>@data.walkCount</td>
+        <td>@data.runDistance</td>
+        <td>@data.readCount</td>
+        <td>@data.techReadCount</td>
+        <td>@data.bizReadCount</td>
+        <td>@{data.toHourMin(data.techStudyTime)}</td>
+        <td>@{data.toHourMin(data.englishStudyTime)}</td>
     </tr>
     }
+    </tbody>
 </table>
+</div>
 } else {
 <p>レコードなし</p>
 }

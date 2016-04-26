@@ -17,9 +17,9 @@
      *@
     @*@play20.welcome(message, style = "Java") *@
 
-    <p>@msg</p>
+    <p class="bg-primary">@msg</p>
 
-    <h2>
+    <p class="bg-info">
         @{val title1 = if("M".equals(viewType)) {
             "年別集計(" + msg.substring(0,4) + "年)"
         } else if("W".equals(viewType)) {
@@ -29,9 +29,9 @@
         }
         title1
         }
-    </h2>
+    </p>
     @summary(sum2)
-    <h2>
+    <p class="bg-info">
         @{val title2 = if("M".equals(viewType)) {
             "月別集計(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
         } else if("W".equals(viewType)) {
@@ -40,9 +40,9 @@
         }
         title2
         }
-    </h2>
+    </p>
     @summary(sum1)
-    <h2>
+    <p class="bg-success">
         @{val title3 = if("M".equals(viewType)) {
         "一覧(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
         } else if("W".equals(viewType)) {
@@ -51,7 +51,7 @@
         }
         title3
         }
-    </h2>
+    </p>
     @logList(datas)
 }
 

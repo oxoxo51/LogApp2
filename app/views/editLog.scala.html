@@ -3,9 +3,10 @@
 @import helper._
 
 @main("入力画面") {
-	<h1>入力画面</h1>
+	<h2 class="bg-info">入力画面</h2>
 	<p>@msg</p>
-	@form(action = routes.LifeLogController.edit) {
+	<div class="container">
+	@form(action = routes.LifeLogController.edit, 'class ->"form-horizontal") {
 		@(inputText(
 			field = form1("id"),
 			args = 'type -> "hidden",
@@ -64,7 +65,7 @@
 			<dt><label for="readCount">読書</label>
 			</dt>
 			<dd>
-				TOTAL:<input type="number" name="readCount" id="readCount" value=@form1("readCount").value min="0" max="99">
+				TOTAL:<input type="number" name="readCount" id="readCount" value="@form1("readCount").value" min="0" max="99">
 				（内 技術書：<input type="number" name="techReadCount" id="techReadCount" value="@form1("techReadCount").value" min="0" max="99">
 				ビジネス書：<input type="number" name="bizReadCount" id="bizReadCount" value="@form1("bizReadCount").value" min="0" max="99">）
 			</dd>
@@ -86,4 +87,5 @@
 		))
 		<input type="submit">
 	}
+	</div>
 }
