@@ -11,10 +11,20 @@
 			args = 'type -> "hidden",
 					'_label -> ""
 		))
-		@(inputDate(
+		@* TODO：汚いコードなのでなんとかしたい *@
+		@{if (form1("id").value != null){
+		(inputDate(
+			field = form1("logDate"),
+			args = '_label -> "日付",
+					'readonly -> true
+		))
+		} else {
+		(inputDate(
 			field = form1("logDate"),
 			args = '_label -> "日付"
 		))
+		}
+		}
 		<dl class=" " id="sleepHour_field">
 			<dt><label for="sleepHour">就寝時刻</label>
 			</dt>
