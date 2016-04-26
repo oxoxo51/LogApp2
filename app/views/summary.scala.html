@@ -1,31 +1,37 @@
 @(sum: LifeLog)
 @if(sum != null) {
-<table>
+<div class="container">
+<table class="table table-sm table-responsive">
+    <thead>
     <tr>
-        <th>就寝</th>
-        <th>起床</th>
-        <th>退社</th>
-        <th>歩数</th>
-        <th>RUN</th>
-        <th>読書</th>
-        <th>技術書</th>
-        <th>Biz書</th>
-        <th>技術勉強</th>
-        <th>英語勉強</th>
+        <th class="table-success">就寝</th>
+        <th class="table-success">起床</th>
+        <th class="table-success">退社</th>
+        <th class="table-info">歩数</th>
+        <th class="table-info">RUN</th>
+        <th class="table-info">読書</th>
+        <th class="table-info">技術書</th>
+        <th class="table-info">Biz書</th>
+        <th class="table-info">技術勉強</th>
+        <th class="table-info">英語勉強</th>
     </tr>
+    </thead>
+    <tbody>
     <tr>
-        <th>@{sum.toHourMin(sum.sleepHour,sum.sleepMin)}</th>
-        <th>@{sum.toHourMin(sum.wakeUpHour,sum.wakeUpMin)}</th>
-        <th>@{sum.toHourMin(sum.leaveHour,sum.leaveMin)}</th>
-        <th>@sum.walkCount</th>
-        <th>@sum.runDistance</th>
-        <th>@sum.readCount</th>
-        <th>@sum.techReadCount</th>
-        <th>@sum.bizReadCount</th>
-        <th>@{sum.toHourMin(sum.techStudyTime)}</th>
-        <th>@{sum.toHourMin(sum.englishStudyTime)}</th>
+        <td>@{sum.toHourMin(sum.sleepHour,sum.sleepMin)}</td>
+        <td>@{sum.toHourMin(sum.wakeUpHour,sum.wakeUpMin)}</td>
+        <td>@{sum.toHourMin(sum.leaveHour,sum.leaveMin)}</td>
+        <td>@sum.walkCount</td>
+        <td>@sum.runDistance</td>
+        <td>@sum.readCount</td>
+        <td>@sum.techReadCount</td>
+        <td>@sum.bizReadCount</td>
+        <td>@{sum.toHourMin(sum.techStudyTime)}</td>
+        <td>@{sum.toHourMin(sum.englishStudyTime)}</td>
     </tr>
+    </tbody>
 </table>
+</div>
 } else {
 <p>レコードなし</p>
 }
