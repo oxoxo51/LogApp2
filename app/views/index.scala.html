@@ -17,7 +17,17 @@
      *@
     @*@play20.welcome(message, style = "Java") *@
 
-    <p class="bg-primary">@msg</p>
+    <p class="bg-primary">
+        @{val title0 = if("M".equals(viewType)) {
+            val prevMonth = LifeLogController.getMonth(msg,-1)
+            val nextMonth = LifeLogController.getMonth(msg,1)
+            "<a class=bg-primary href=/"+prevMonth+">＜</a> "+msg+" <a class=bg-primary href=/"+nextMonth+">＞</a>"
+        } else {
+           msg
+        }
+        Html(title0)
+        }
+    </p>
 
     <p class="bg-info">
         @{val title1 = if("M".equals(viewType)) {

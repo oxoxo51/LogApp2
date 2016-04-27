@@ -139,6 +139,22 @@ public class LifeLogController extends Apps {
 		return df.format(cal.getTime());
 	}
 
+	/**
+	 * 指定の年月からNヶ月後(前)の年月を返す
+	 * @param yearMonth
+	 * @param month
+	 * @return
+	 */
+	public static String getMonth(String yearMonth, int month) throws ParseException {
+		DateFormat df = new SimpleDateFormat("yyyyMM");
+		Calendar cal = Calendar.getInstance();
+		Date day = df.parse(yearMonth);
+		cal.setTime(day);
+		cal.add(Calendar.MONTH, month);
+		return df.format(cal.getTime());
+
+	}
+
 
 	/**
 	 * 月別の集計を返却する.
