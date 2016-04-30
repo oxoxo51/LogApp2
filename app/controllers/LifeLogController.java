@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +40,7 @@ public class LifeLogController extends Apps {
 	// 年月毎の表示
 	public Result displayIndex(String yearMonth) {
 		// 不正な引数のチェック
-		if (yearMonth.length() != 6) {
+		if ((yearMonth.length() != 6) && (yearMonth.length() != 4)) {
 			flash("error", "ERROR:不正なURLです。");
 			return badRequest(index.render("ERROR:不正なURLです。", null, null, null, null));
 		}
@@ -47,8 +48,15 @@ public class LifeLogController extends Apps {
 
 		List<LifeLog> datas = null;
 		try {
-			datas = LifeLog.getMonthRecord(yearMonth);
-			return ok(index.render(yearMonth, "M", datas, getMonthlySummary(yearMonth), getYearlySummary(year)));
+			if (yearMonth.length() == 6) {
+				// 月別表示
+				datas = LifeLog.getMonthRecord(yearMonth);
+				return ok(index.render(yearMonth, "M", datas, getMonthlySummary(yearMonth), getYearlySummary(year)));
+			} else {
+				// 年別表示
+				datas = LifeLog.getYearRecord(year);
+				return ok(index.render(year, "Y", datas, getAllMonthlySummary(year), getYearlySummary(year)));
+			}
 		} catch (ParseException e) {
 			flash("error", "ERROR:一覧が取得できません。");
 			return badRequest(index.render("ERROR:一覧が取得できません。", "M", datas, null, null));
@@ -106,11 +114,14 @@ public class LifeLogController extends Apps {
 	/**
 	 * 週別の集計を返却する.
 	 * TODO 別クラスに外出しすべき？
+	 * 1週分だけの返却だがリストに詰めて返却する.
 	 * @param yearMonthDay
 	 * @return
 	 */
-	public LifeLog getWeeklySummary(String yearMonthDay) {
+	public List<LifeLog> getWeeklySummary(String yearMonthDay) {
+		List<LifeLog> weeklySummary = new ArrayList<>();
 		List<LifeLog> datas = null;
+
 		try {
 			datas = LifeLog.getWeekRecord(yearMonthDay);
 		} catch (ParseException e) {
@@ -121,7 +132,8 @@ public class LifeLogController extends Apps {
 			return null;
 		}
 
-		return getSummary(datas);
+		weeklySummary.add(getSummary(datas));
+		return weeklySummary;
 	}
 
 	/**
@@ -158,11 +170,13 @@ public class LifeLogController extends Apps {
 
 	/**
 	 * 月別の集計を返却する.
+	 * 1月分だけの返却だがリストに詰めて返却する.
 	 * TODO 別クラスに外出しすべき？
 	 * @param yearMonth
 	 * @return
 	 */
-	public LifeLog getMonthlySummary(String yearMonth) {
+	public List<LifeLog> getMonthlySummary(String yearMonth) {
+		List<LifeLog> monthlySummary = new ArrayList<>();
 		List<LifeLog> datas = null;
 		try {
 			datas = LifeLog.getMonthRecord(yearMonth);
@@ -173,18 +187,43 @@ public class LifeLogController extends Apps {
 		if (datas.size() == 0) {
 			return null;
 		}
+		monthlySummary.add(getSummary(datas));
+		return monthlySummary;
+	}
 
-		return getSummary(datas);
+	/**
+	 * 指定された年の月ごとの集計をリスト形式で返却する.
+	 * @param year
+	 * @return
+	 */
+	public List<LifeLog> getAllMonthlySummary(String year) {
+		List<LifeLog> allMonthlySummary = new ArrayList<>();
+		String yearMonth = year + "01";
+		try {
+			// 月ごとにサマリを取得する
+			for (int i = 0; i < 11; i++) {
+				LifeLog summary = getSummary(LifeLog.getMonthRecord(yearMonth));
+				if (summary != null) {
+					allMonthlySummary.add(summary);
+				}
+				// 次の月
+				yearMonth = getMonth(yearMonth, 1);
+			}
+		} catch (ParseException e) {
+			return null;
+		}
+		return allMonthlySummary;
 	}
 
 	/**
 	 * 年別の集計を返却する.
+	 * 1月分だけの返却だがリストに詰めて返却する.
 	 * TODO 別クラスに外出しすべき？
 	 * @param year
 	 * @return
 	 */
-	public LifeLog getYearlySummary(String year) {
-
+	public List<LifeLog> getYearlySummary(String year) {
+		List<LifeLog> yearlySummary = new ArrayList<>();
 		List<LifeLog> datas = null;
 		try {
 			datas = LifeLog.getYearRecord(year);
@@ -195,11 +234,14 @@ public class LifeLogController extends Apps {
 		if (datas.size() == 0) {
 			return null;
 		}
-
-		return getSummary(datas);
+		yearlySummary.add(getSummary(datas));
+		return yearlySummary;
 	}
 	// 集計結果を返す
 	private LifeLog getSummary(List<LifeLog> resource) {
+		if (resource.size() == 0) {
+			return null;
+		}
 		// 集計用インスタンス
 		LifeLog monSum = new LifeLog();
 		// 平均値計算用カウンタ
@@ -209,6 +251,10 @@ public class LifeLogController extends Apps {
 
 		// 単純に合計
 		for (LifeLog data : resource) {
+			// 日付は1件目のデータのみ取得
+			if (monSum.logDate == null) {
+				monSum.logDate = data.logDate;
+			}
 			if (isCalcuratable(data.sleepHour)) {
 				monSum.sleepHour += data.sleepHour;
 				monSum.sleepMin += data.sleepMin;

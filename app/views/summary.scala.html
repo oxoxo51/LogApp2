@@ -1,9 +1,15 @@
-@(sum: LifeLog)
-@if(sum != null) {
+@(sumList: List[LifeLog], viewType: String)
+
+@import java.text.SimpleDateFormat
+
+@if(sumList != null && sumList.size() != 0) {
 <div class="container">
 <table class="table table-sm table-responsive">
     <thead>
     <tr>
+        @if("YM".equals(viewType)){
+        <th>月</th>
+        }
         <th class="table-success">就寝</th>
         <th class="table-success">起床</th>
         <th class="table-success">退社</th>
@@ -17,7 +23,11 @@
     </tr>
     </thead>
     <tbody>
+    @for(sum <- sumList) {
     <tr>
+        @if("YM".equals(viewType)){
+        <td>@{(new SimpleDateFormat("yy/MM")).format(sum.logDate)}</td>
+        }
         <td>@{sum.toHourMin(sum.sleepHour,sum.sleepMin)}</td>
         <td>@{sum.toHourMin(sum.wakeUpHour,sum.wakeUpMin)}</td>
         <td>@{sum.toHourMin(sum.leaveHour,sum.leaveMin)}</td>
@@ -29,6 +39,7 @@
         <td>@{sum.toHourMin(sum.techStudyTime)}</td>
         <td>@{sum.toHourMin(sum.englishStudyTime)}</td>
     </tr>
+    }
     </tbody>
 </table>
 </div>

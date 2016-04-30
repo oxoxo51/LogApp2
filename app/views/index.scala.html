@@ -1,5 +1,5 @@
 @* メッセージ, データのリスト、サマリ1、サマリ2 *@
-@(msg: String, viewType: String, datas: List[LifeLog], sum1: LifeLog, sum2: LifeLog)
+@(msg: String, viewType: String, datas: List[LifeLog], sum1: List[LifeLog], sum2: List[LifeLog])
 
 @import helper._
 
@@ -22,6 +22,10 @@
             val prevMonth = LifeLogController.getMonth(msg,-1)
             val nextMonth = LifeLogController.getMonth(msg,1)
             "<a class=bg-primary href=/"+prevMonth+">＜</a> "+msg+" <a class=bg-primary href=/"+nextMonth+">＞</a>"
+        } else if("Y".equals(viewType)) {
+            val prevYear = (Integer.parseInt(msg)-1).toString()
+            val nextYear = (Integer.parseInt(msg)+1).toString()
+            "<a class=bg-primary href=/"+prevYear+">＜</a> "+msg+" <a class=bg-primary href=/"+nextYear+">＞</a>"
         } else {
            msg
         }
@@ -30,7 +34,7 @@
     </p>
 
     <p class="bg-info">
-        @{val title1 = if("M".equals(viewType)) {
+        @{val title1 = if(("M".equals(viewType)) || ("Y".equals(viewType))) {
             "年別集計(" + msg.substring(0,4) + "年)"
         } else if("W".equals(viewType)) {
             val lastWkDate = LifeLogController.getPrevWeekDate(msg)
@@ -40,10 +44,12 @@
         title1
         }
     </p>
-    @summary(sum2)
+    @summary(sum2, viewType)
     <p class="bg-info">
         @{val title2 = if("M".equals(viewType)) {
             "月別集計(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
+        } else if("Y".equals(viewType)) {
+            "月別集計(" + msg + "年)"
         } else if("W".equals(viewType)) {
             val wkDateList = LifeLog.getFirstAndLastDate(msg)
             "今週のサマリ(" + wkDateList(0) + "~" + wkDateList(1) + ")"
@@ -51,13 +57,19 @@
         title2
         }
     </p>
-    @summary(sum1)
+    @if("Y".equals(viewType)) {
+        @summary(sum1, "YM")
+    } else {
+        @summary(sum1, viewType)
+    }
     <p class="bg-success">
         @{val title3 = if("M".equals(viewType)) {
-        "一覧(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
+            "一覧(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
+        } else if("Y".equals(viewType)) {
+            "一覧(" + msg + "年)"
         } else if("W".equals(viewType)) {
-        val wkDateList = LifeLog.getFirstAndLastDate(msg)
-        "一覧(" + wkDateList(0) + "~" + wkDateList(1) + ")"
+            val wkDateList = LifeLog.getFirstAndLastDate(msg)
+            "一覧(" + wkDateList(0) + "~" + wkDateList(1) + ")"
         }
         title3
         }

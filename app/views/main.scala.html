@@ -25,6 +25,15 @@
                     alert("年月を選択して下さい");
                 }
             }
+            function showYearPage() {
+
+                var yearMonthAry = (yearMonthForm.yearMonth.value).split("-");
+                if (yearMonthAry.length === 2) {
+                    location.href = "/" + yearMonthAry[0];
+                } else {
+                    alert("年月を選択して下さい");
+                }
+            }
         </script>
     </head>
     <body>
@@ -38,8 +47,9 @@
             </li>
             <li class="nav-item nav-link">
                 <form name="yearMonthForm">
-                    <label>月別表示を開く：</label><input type="month" name="yearMonth">
-                    <button type="button" class="btn btn-primary-outline btn-sm" onclick="showMonthPage()">開く</button>
+                    <input type="month" name="yearMonth">
+                    <button type="button" class="btn btn-primary-outline btn-sm" onclick="showMonthPage()">月別表示</button>
+                    <button type="button" class="btn btn-primary-outline btn-sm" onclick="showYearPage()">年別表示</button>
                 </form>
             </li>
         </ul>
