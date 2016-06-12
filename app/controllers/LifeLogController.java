@@ -26,10 +26,11 @@ public class LifeLogController extends Apps {
 		DateFormat sf = new SimpleDateFormat("yyyyMMdd");
 		String yearMonthDay = sf.format(new Date());
 
-		List<LifeLog> thisWData = null;
+		List<LifeLog> wData = null;
 		try {
-			thisWData = LifeLog.getWeekRecord(yearMonthDay);
-			return ok(index.render(yearMonthDay, "W", thisWData,
+			wData = LifeLog.getWeekRecord(LifeLog.getLastWeekDate(yearMonthDay));
+			wData.addAll(LifeLog.getWeekRecord(yearMonthDay));
+			return ok(index.render(yearMonthDay, "W",  wData,
 					getWeeklySummary(yearMonthDay), getWeeklySummary(getPrevWeekDate(yearMonthDay))));
 		} catch (ParseException e) {
 			flash("error", "ERROR:一覧が取得できません。");

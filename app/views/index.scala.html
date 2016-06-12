@@ -68,7 +68,7 @@
         } else if("Y".equals(viewType)) {
             "一覧(" + msg + "年)"
         } else if("W".equals(viewType)) {
-            val wkDateList = LifeLog.getFirstAndLastDate(msg)
+            val wkDateList = LifeLog.get2WeekDate(msg)
             "一覧(" + wkDateList(0) + "~" + wkDateList(1) + ")"
         }
         title3

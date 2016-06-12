@@ -123,6 +123,19 @@ public class LifeLog extends Model {
 
 	}
 
+	/* 指定した日付の1週間前の日付を返す */
+	public static String getLastWeekDate(String yearMonthDay) throws ParseException {
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+
+		Date day = df.parse(yearMonthDay);
+		cal.setTime(day);
+
+		// 一週間前（7日前）の日付
+		cal.add(Calendar.DATE, -7);
+		return df.format(cal.getTime());
+	}
+
 	/* 指定した年月日を含む週の初日（日曜日）/最終日（土曜日）の日付をyyyyMMdd形式のリストで返す */
 	public static List<String> getFirstAndLastDate(String yearMonthDay) throws ParseException {
 
@@ -141,6 +154,13 @@ public class LifeLog extends Model {
 
 		List<String> dateList = Arrays.asList(df.format(sunday), df.format(saturday));
 
+		return dateList;
+	}
+
+	/* 指定した年月日の前週の日曜日と当週の土曜日の日付をyyyyMMdd形式のリストで返す */
+	public static List<String> get2WeekDate(String yearMonthDay) throws ParseException {
+		List<String> dateList = getFirstAndLastDate((yearMonthDay));
+		dateList.set(0, getLastWeekDate(dateList.get(0)));
 		return dateList;
 	}
 
