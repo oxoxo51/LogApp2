@@ -4,7 +4,7 @@
 # --- !Ups
 
 create table life_log (
-  id                            bigint not null,
+  id                            bigint not null primary key,
   log_date                      timestamp,
   sleep_hour                    bigint,
   sleep_min                     bigint,
@@ -20,8 +20,7 @@ create table life_log (
   tech_study_time               bigint(5) default 0,
   english_study_time            bigint(5) default 0,
   create_date                   timestamp not null,
-  update_date                   timestamp not null,
-  constraint pk_life_log primary key (id)
+  update_date                   timestamp not null
 );
 create sequence life_log_seq;
 
