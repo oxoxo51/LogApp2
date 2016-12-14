@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/logapp2 -Dplay.crypto.secret=${APPLICATION_SECRET} -Dhttp.port=${PORT} -Dconfig.resource=heroku.conf
+web: target/universal/stage/bin/logapp2 -Dplay.crypto.secret=${APPLICATION_SECRET} -Dplay.evolutions.db.default.autoApply=true -Dhttp.port=${PORT} -Dconfig.resource=heroku.conf
