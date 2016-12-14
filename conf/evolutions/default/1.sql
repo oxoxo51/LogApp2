@@ -1,7 +1,7 @@
 # --- !Ups
 
 create table life_log (
-  id                            bigint not null primary key,
+  id                            serial not null primary key,
   log_date                      timestamp,
   sleep_hour                    bigint,
   sleep_min                     bigint,
@@ -19,11 +19,9 @@ create table life_log (
   create_date                   timestamp not null,
   update_date                   timestamp not null
 );
-create sequence life_log_seq;
 
 
 # --- !Downs
 
 drop table life_log;
-drop sequence life_log_seq;
 
