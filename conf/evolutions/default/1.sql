@@ -27,6 +27,6 @@ create sequence life_log_seq;
 
 # --- !Downs
 
-drop table if exists life_log;
-drop sequence if exists life_log_seq;
+drop table life_log;
+drop sequence life_log_seq;
 
