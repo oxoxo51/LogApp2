@@ -80,6 +80,40 @@ public class LifeLogController extends Apps {
 			// デフォルト値設定
 			data.setDefaultValue();
 
+			// 時刻項目は時のみ入力→分にゼロをセット、分のみ入力→エラー
+			boolean errFlg = false;
+			if (data.sleepHour == null) {
+				if (data.sleepMin != null) {
+					errFlg = true;
+				}
+			} else {
+				if (data.sleepMin == null) {
+					data.sleepMin = 0l;
+				}
+			}
+			if (data.wakeUpHour == null) {
+				if (data.wakeUpMin != null) {
+					errFlg = true;
+				}
+			} else {
+				if (data.wakeUpMin == null) {
+					data.wakeUpMin = 0l;
+				}
+			}
+			if (data.leaveHour == null) {
+				if (data.leaveMin != null) {
+					errFlg = true;
+				}
+			} else {
+				if (data.leaveMin == null) {
+					data.leaveMin = 0l;
+				}
+			}
+			if (errFlg) {
+				flash("error", "ERROR:時刻項目は時・分両方入力してください。");
+				return badRequest(editLog.render("ERROR:時刻項目は時・分両方入力してください。", f));
+			}
+
 			if (data.id != null) {
 				data.update();
 				flash("success", "更新しました。");
