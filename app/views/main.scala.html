@@ -16,6 +16,7 @@
         <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))'>
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.js"))'></script>
         <script type="text/javascript">
             function showMonthPage() {
 
@@ -39,21 +40,29 @@
     </head>
     <body>
         @* 共通ヘッダ部分 *@
-        <ul class="nav nav-inline">
-            <li class="nav-item">
-                <a class="nav-link" href="@routes.LifeLogController.index()">LogApp2</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"href="@routes.LifeLogController.displayNew()">新規登録</a>
-            </li>
-            <li class="nav-item nav-link">
-                <form name="yearMonthForm">
-                    <input type="month" name="yearMonth">
-                    <button type="button" class="btn btn-primary-outline btn-sm" onclick="showMonthPage()">月別表示</button>
-                    <button type="button" class="btn btn-primary-outline btn-sm" onclick="showYearPage()">年別表示</button>
-                </form>
-            </li>
-        </ul>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarLogApp">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@routes.LifeLogController.index()">LogApp2</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarLogApp">
+                    <ul class="nav navbar-nav">
+                        <li><a href="@routes.LifeLogController.displayNew()">新規登録</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search" name="yearMonthForm">
+                        <div class="form-group"><input type="month" class="form-control" name="yearMonth"></div>
+                        <button type="button" class="btn" onclick="showMonthPage()">月別表示</button>
+                        <button type="button" class="btn" onclick="showYearPage()">年別表示</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
         @* エラーメッセージ表示*@
         @tag.flashMessage()
         <div class="content">
