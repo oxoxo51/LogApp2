@@ -11,9 +11,10 @@
     <head>
         @* Here's where we render the page title `String`. *@
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))'>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
         <script type="text/javascript">
             function showMonthPage() {
@@ -37,29 +38,27 @@
         </script>
     </head>
     <body>
-        <div class="container">
-            @* 共通ヘッダ部分 *@
-            <ul class="nav nav-inline">
-                <li class="nav-item">
-                    <a class="nav-link" href="@routes.LifeLogController.index()">LogApp2</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link"href="@routes.LifeLogController.displayNew()">新規登録</a>
-                </li>
-                <li class="nav-item nav-link">
-                    <form name="yearMonthForm">
-                        <input type="month" name="yearMonth">
-                        <button type="button" class="btn btn-primary-outline btn-sm" onclick="showMonthPage()">月別表示</button>
-                        <button type="button" class="btn btn-primary-outline btn-sm" onclick="showYearPage()">年別表示</button>
-                    </form>
-                </li>
-            </ul>
-            @* エラーメッセージ表示*@
-            @tag.flashMessage()
-            <div class="content">
-                @* ページ内コンテンツ出力 *@
-                @content
-            </div>
+        @* 共通ヘッダ部分 *@
+        <ul class="nav nav-inline">
+            <li class="nav-item">
+                <a class="nav-link" href="@routes.LifeLogController.index()">LogApp2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"href="@routes.LifeLogController.displayNew()">新規登録</a>
+            </li>
+            <li class="nav-item nav-link">
+                <form name="yearMonthForm">
+                    <input type="month" name="yearMonth">
+                    <button type="button" class="btn btn-primary-outline btn-sm" onclick="showMonthPage()">月別表示</button>
+                    <button type="button" class="btn btn-primary-outline btn-sm" onclick="showYearPage()">年別表示</button>
+                </form>
+            </li>
+        </ul>
+        @* エラーメッセージ表示*@
+        @tag.flashMessage()
+        <div class="content">
+            @* ページ内コンテンツ出力 *@
+            @content
         </div>
     </body>
 </html>

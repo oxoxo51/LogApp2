@@ -3,47 +3,45 @@
 @import java.text.SimpleDateFormat
 
 @if(sumList != null && sumList.size() != 0) {
-<div class="container">
-    <div class="table-responsive">
-        <table class="table table-sm">
-            <thead>
-            <tr>
-                @if("YM".equals(viewType)){
-                <th>月</th>
-                }
-                <th class="table-success">就寝</th>
-                <th class="table-success">起床</th>
-                <th class="table-success">退社</th>
-                <th class="table-info">歩数</th>
-                <th class="table-info">RUN</th>
-                <th class="table-info">読書</th>
-                <th class="table-info">技術書</th>
-                <th class="table-info">Biz書</th>
-                <th class="table-info">技術勉強</th>
-                <th class="table-info">英語勉強</th>
-            </tr>
-            </thead>
-            <tbody>
-            @for(sum <- sumList) {
-            <tr>
-                @if("YM".equals(viewType)){
-                <td>@{(new SimpleDateFormat("yy/MM")).format(sum.logDate)}</td>
-                }
-                <td>@{sum.toHourMin(sum.sleepHour,sum.sleepMin)}</td>
-                <td>@{sum.toHourMin(sum.wakeUpHour,sum.wakeUpMin)}</td>
-                <td>@{sum.toHourMin(sum.leaveHour,sum.leaveMin)}</td>
-                <td>@sum.walkCount</td>
-                <td>@sum.runDistance</td>
-                <td>@sum.readCount</td>
-                <td>@sum.techReadCount</td>
-                <td>@sum.bizReadCount</td>
-                <td>@{sum.toHourMin(sum.techStudyTime)}</td>
-                <td>@{sum.toHourMin(sum.englishStudyTime)}</td>
-            </tr>
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            @if("YM".equals(viewType)){
+            <th>月</th>
             }
-            </tbody>
-        </table>
-    </div>
+            <th class="table-success">就寝</th>
+            <th class="table-success">起床</th>
+            <th class="table-success">退社</th>
+            <th class="table-info">歩数</th>
+            <th class="table-info">RUN</th>
+            <th class="table-info">読書</th>
+            <th class="table-info">技術書</th>
+            <th class="table-info">Biz書</th>
+            <th class="table-info">技術勉強</th>
+            <th class="table-info">英語勉強</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for(sum <- sumList) {
+        <tr>
+            @if("YM".equals(viewType)){
+            <td>@{(new SimpleDateFormat("yy/MM")).format(sum.logDate)}</td>
+            }
+            <td>@{sum.toHourMin(sum.sleepHour,sum.sleepMin)}</td>
+            <td>@{sum.toHourMin(sum.wakeUpHour,sum.wakeUpMin)}</td>
+            <td>@{sum.toHourMin(sum.leaveHour,sum.leaveMin)}</td>
+            <td>@sum.walkCount</td>
+            <td>@sum.runDistance</td>
+            <td>@sum.readCount</td>
+            <td>@sum.techReadCount</td>
+            <td>@sum.bizReadCount</td>
+            <td>@{sum.toHourMin(sum.techStudyTime)}</td>
+            <td>@{sum.toHourMin(sum.englishStudyTime)}</td>
+        </tr>
+        }
+        </tbody>
+    </table>
 </div>
 } else {
 <p>レコードなし</p>

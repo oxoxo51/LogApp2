@@ -17,63 +17,70 @@
      *@
     @*@play20.welcome(message, style = "Java") *@
 
-    <p class="bg-primary">
-        @{val title0 = if("M".equals(viewType)) {
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            @{val title0 = if("M".equals(viewType)) {
             val prevMonth = LifeLogController.getMonth(msg,-1)
             val nextMonth = LifeLogController.getMonth(msg,1)
             "<a class=bg-primary href=/"+prevMonth+">＜</a> "+msg+" <a class=bg-primary href=/"+nextMonth+">＞</a>"
-        } else if("Y".equals(viewType)) {
+            } else if("Y".equals(viewType)) {
             val prevYear = (Integer.parseInt(msg)-1).toString()
             val nextYear = (Integer.parseInt(msg)+1).toString()
             "<a class=bg-primary href=/"+prevYear+">＜</a> "+msg+" <a class=bg-primary href=/"+nextYear+">＞</a>"
-        } else {
-           msg
-        }
-        Html(title0)
-        }
-    </p>
-
-    <p class="bg-info">
-        @{val title1 = if(("M".equals(viewType)) || ("Y".equals(viewType))) {
-            "年別集計(" + msg.substring(0,4) + "年)"
-        } else if("W".equals(viewType)) {
-            val lastWkDate = LifeLogController.getPrevWeekDate(msg)
-            val lastWkDateList = LifeLog.getFirstAndLastDate(lastWkDate)
-            "先週のサマリ(" + lastWkDateList(0) + "~" + lastWkDateList(1) + ")"
-        }
-        title1
-        }
-    </p>
-    @summary(sum2, viewType)
-    <p class="bg-info">
-        @{val title2 = if("M".equals(viewType)) {
-            "月別集計(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
-        } else if("Y".equals(viewType)) {
-            "月別集計(" + msg + "年)"
-        } else if("W".equals(viewType)) {
-            val wkDateList = LifeLog.getFirstAndLastDate(msg)
-            "今週のサマリ(" + wkDateList(0) + "~" + wkDateList(1) + ")"
-        }
-        title2
-        }
-    </p>
-    @if("Y".equals(viewType)) {
-        @summary(sum1, "YM")
-    } else {
-        @summary(sum1, viewType)
-    }
-    <p class="bg-success">
-        @{val title3 = if("M".equals(viewType)) {
-            "一覧(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
-        } else if("Y".equals(viewType)) {
-            "一覧(" + msg + "年)"
-        } else if("W".equals(viewType)) {
-            val wkDateList = LifeLog.get2WeekDate(msg)
-            "一覧(" + wkDateList(0) + "~" + wkDateList(1) + ")"
-        }
-        title3
-        }
-    </p>
-    @logList(datas)
+            } else {
+            msg
+            }
+            Html(title0)
+            }
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                @{val title1 = if(("M".equals(viewType)) || ("Y".equals(viewType))) {
+                "年別集計(" + msg.substring(0,4) + "年)"
+                } else if("W".equals(viewType)) {
+                val lastWkDate = LifeLogController.getPrevWeekDate(msg)
+                val lastWkDateList = LifeLog.getFirstAndLastDate(lastWkDate)
+                "先週のサマリ(" + lastWkDateList(0) + "~" + lastWkDateList(1) + ")"
+                }
+                title1
+                }
+            </div>
+            @summary(sum2, viewType)
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                @{val title2 = if("M".equals(viewType)) {
+                "月別集計(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
+                } else if("Y".equals(viewType)) {
+                "月別集計(" + msg + "年)"
+                } else if("W".equals(viewType)) {
+                val wkDateList = LifeLog.getFirstAndLastDate(msg)
+                "今週のサマリ(" + wkDateList(0) + "~" + wkDateList(1) + ")"
+                }
+                title2
+                }
+            </div>
+            @if("Y".equals(viewType)) {
+            @summary(sum1, "YM")
+            } else {
+            @summary(sum1, viewType)
+            }
+        </div>
+        <div class="panel panel-success">
+            <div class="panel panel-heading">
+                @{val title3 = if("M".equals(viewType)) {
+                "一覧(" + msg.substring(0,4) + "年" + msg.substring(4,6) + "月)"
+                } else if("Y".equals(viewType)) {
+                "一覧(" + msg + "年)"
+                } else if("W".equals(viewType)) {
+                val wkDateList = LifeLog.get2WeekDate(msg)
+                "一覧(" + wkDateList(0) + "~" + wkDateList(1) + ")"
+                }
+                title3
+                }
+            </div>
+            @logList(datas)
+        </div>
+    </div>
 }
 
