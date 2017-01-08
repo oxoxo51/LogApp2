@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.inject.Inject;
 import models.LifeLog;
 import play.data.Form;
 import play.mvc.Result;
@@ -19,6 +20,7 @@ import java.util.List;
  * Created on 2016/04/06.
  */
 public class LifeLogController extends Apps {
+	@Inject private WebJarAssets webJarAssets;
 
 	// ルートにアクセスしたときのAction
 	public Result index() {
@@ -31,10 +33,10 @@ public class LifeLogController extends Apps {
 			wData = LifeLog.getWeekRecord(LifeLog.getLastWeekDate(yearMonthDay));
 			wData.addAll(LifeLog.getWeekRecord(yearMonthDay));
 			return ok(index.render(yearMonthDay, "W",  wData,
-					getWeeklySummary(yearMonthDay), getWeeklySummary(getPrevWeekDate(yearMonthDay))));
+					getWeeklySummary(yearMonthDay), getWeeklySummary(getPrevWeekDate(yearMonthDay)), webJarAssets));
 		} catch (ParseException e) {
 			flash("error", "ERROR:一覧が取得できません。");
-			return badRequest(index.render("ERROR:一覧が取得できません", null, null, null, null));
+			return badRequest(index.render("ERROR:一覧が取得できません", null, null, null, null, webJarAssets));
 		}
 	}
 
@@ -43,7 +45,7 @@ public class LifeLogController extends Apps {
 		// 不正な引数のチェック
 		if ((yearMonth.length() != 6) && (yearMonth.length() != 4)) {
 			flash("error", "ERROR:不正なURLです。");
-			return badRequest(index.render("ERROR:不正なURLです。", null, null, null, null));
+			return badRequest(index.render("ERROR:不正なURLです。", null, null, null, null, webJarAssets));
 		}
 		String year = yearMonth.substring(0,4);
 
@@ -52,22 +54,22 @@ public class LifeLogController extends Apps {
 			if (yearMonth.length() == 6) {
 				// 月別表示
 				datas = LifeLog.getMonthRecord(yearMonth);
-				return ok(index.render(yearMonth, "M", datas, getMonthlySummary(yearMonth), getYearlySummary(year)));
+				return ok(index.render(yearMonth, "M", datas, getMonthlySummary(yearMonth), getYearlySummary(year), webJarAssets));
 			} else {
 				// 年別表示
 				datas = LifeLog.getYearRecord(year);
-				return ok(index.render(year, "Y", datas, getAllMonthlySummary(year), getYearlySummary(year)));
+				return ok(index.render(year, "Y", datas, getAllMonthlySummary(year), getYearlySummary(year), webJarAssets));
 			}
 		} catch (ParseException e) {
 			flash("error", "ERROR:一覧が取得できません。");
-			return badRequest(index.render("ERROR:一覧が取得できません。", "M", datas, null, null));
+			return badRequest(index.render("ERROR:一覧が取得できません。", "M", datas, null, null, webJarAssets));
 		}
 	}
 
 	// 新規作成時のAction
 	public Result displayNew() {
 		Form<LifeLog> f = Form.form(LifeLog.class).fill(new LifeLog(new Date()));
-		return ok(editLog.render("入力して下さい", f));
+		return ok(editLog.render("入力して下さい", f, webJarAssets));
 	}
 
 	// 入力をSubmitしたときのAction
@@ -111,7 +113,7 @@ public class LifeLogController extends Apps {
 			}
 			if (errFlg) {
 				flash("error", "ERROR:時刻項目は時・分両方入力してください。");
-				return badRequest(editLog.render("ERROR:時刻項目は時・分両方入力してください。", f));
+				return badRequest(editLog.render("ERROR:時刻項目は時・分両方入力してください。", f, webJarAssets));
 			}
 
 			if (data.id != null) {
@@ -123,7 +125,7 @@ public class LifeLogController extends Apps {
 				for (LifeLog log : logList) {
 					if (log.logDate.compareTo(data.logDate) == 0) {
 						flash("error", "ERROR:登録済の日付です。");
-						return badRequest(editLog.render("ERROR:登録済の日付です", f));
+						return badRequest(editLog.render("ERROR:登録済の日付です", f, webJarAssets));
 					}
 				}
 				data.save();
@@ -131,7 +133,7 @@ public class LifeLogController extends Apps {
 			}
 			return redirect("/");
 		} else {
-			return badRequest(editLog.render("ERROR", f));
+			return badRequest(editLog.render("ERROR", f, webJarAssets));
 		}
 	}
 
@@ -140,9 +142,9 @@ public class LifeLogController extends Apps {
 		LifeLog data = LifeLog.find.byId(id);
 		if (data != null) {
 			Form<LifeLog> f = Form.form(LifeLog.class).fill(data);
-			return ok(editLog.render("編集して下さい", f));
+			return ok(editLog.render("編集して下さい", f, webJarAssets));
 		} else {
-			return ok(index.render("ERROR:見つかりません", null, null, null, null));
+			return ok(index.render("ERROR:見つかりません", null, null, null, null, webJarAssets));
 		}
 	}
 
